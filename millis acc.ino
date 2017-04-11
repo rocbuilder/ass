@@ -48,3 +48,26 @@ int smooth(int data, float smoothedVal){
   smoothedVal = (data * (1 - filterVal)) + (smoothedVal  *  filterVal);
   return (int)smoothedVal;
 }
+
+
+
+int dynamicAcc(int acc[], int accRead){
+  int d = 0;
+  acc[accIndex] = accRead;
+  d = accRead - avgArray(acc, accReadings);
+  return (d);
+}
+
+int avgArray(int a[], int num) {
+  int result = 0;
+  result = sumArray(a, num) / num;
+  return (result);
+}
+
+int sumArray(int a[], int num) {
+  int sum = 0;
+  for (int i = 0; i<num; i++) {
+    sum += a[i];
+  }
+  return (sum);
+}
