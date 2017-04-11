@@ -6,6 +6,10 @@ const int powerpin = A4;              // voltage
 const int xpin = A3;                  // x-axis of the accelerometer
 const int ypin = A2;                  // y-axis
 const int zpin = A1;                  // z-axis (only on 3-axis models)
+int x = 0;
+int y = 0;
+int z = 0;
+
 
 float filterVal = 0.25;       // this determines smoothness  - .0001 is max  1 is off (no smoothing)
 
@@ -17,6 +21,15 @@ float sVz = 0;
 float aV = 0; //acceleration vector
 float aMax = 0;
 
+const int dnmcLen = 10; //how many values in dynamic array
+int dnmcIndex =0
+int dnmc[3];
+unsigned long dnmcTimer = 0;
+unsigned long dnmcDelay = 60000;
+int dx = 0;
+int dy = 0;
+int dz = 0;
+
 void setup() {
   Serial.begin(9600);
   pinMode(groundpin, OUTPUT);
@@ -27,10 +40,29 @@ void setup() {
 }
 
 void loop() {
+  x = analogRead(xpin);
+  y = analogRead(ypin);
+  z = analogRead(zpin);
+
+if () {//millis timer-dynamic timer > dynamic delay
+  dnmc[0] += x;
+  dnmc[1] += y;
+  dnmc[2] += z;
+  dnmcIndex ++;
+  if () { //index > length
+    //dynamic timer = millis
+    dnmcIndex = 0;
+    dx = dnmc[0]/dnmcLen;
+    dy = dnmc[1]/dnmcLen;
+    dz = dnmc[2]/dnmcLen;
+  }
+}
+
+
   //smoothen the analog input from axis
-  sVx = smooth(analogRead(xpin), sVx);
-  sVy = smooth(analogRead(ypin), sVy);
-  sVz = smooth(analogRead(zpin), sVz);
+  sVx = smooth(x, sVx);
+  sVy = smooth(y, sVy);
+  sVz = smooth(z, sVz);
   
   aMax = (sVx>sVy?sVx:sVy)>sVz?(sVx>sVy?sVx:sVy):sVz; //select largest axis
   
